@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+{% block style_addon %}
+    <style type="text/css">
+        .params {
+            font-size: 8px;
+        }
+    </style>
+{% endblock %}
+{% block script_addon %}
+    <script type="text/javascript">
+        var context;
+        function startCanvas() {
+            var canvas = document.getElementById('graphic');
+            if (canvas.getContext) {
+                context = canvas.getContext('2d');
+                init(46, 375);
+                params = {{ params }};
+                draw(params, 500, 375);
+            }
+            var canvas = document.getElementById('graphic_step');
+            if (canvas.getContext) {
+                context = canvas.getContext('2d');
+                init(46, 375);
+                params = {{ params_by_step }};
+                draw(params, 500, 375);
+            }
+        }
+        function init(maxWidth, maxHeight) {
+
+            //                squares
+            context.beginPath();
+            for (var x = 0.5; x < 500; x += 10) {
+                context.moveTo(x, 0);
+                context.lineTo(x, 375);
+            }
+
+            for (var y = 0.5; y < 375; y += 10) {
+                context.moveTo(0, y);
+                context.lineTo(500, y);
+            }
+            context.strokeStyle = "#eee";
+            context.stroke();
+
+            //               abcis
+            var y_down = maxHeight - 40;
+            context.beginPath();
+            context.moveTo(0, y_down);
+            context.lineTo(240, y_down);
+            context.moveTo(260, y_down);
+            context.lineTo(500, y_down);
+            context.moveTo(495, y_down - 5);
+            context.lineTo(500, y_down);
+            context.lineTo(495, y_down + 5);
+            context.strokeStyle = "#000";
+            context.stroke();
+            //lines dividers
+            context.beginPath();
+            context.fillText("50", 14, y_down - 51);
+            context.moveTo(60, y_down - 50);
+            context.lineTo(500, y_down - 50);
+            context.fillText("100", 14, y_down - 101);
+            context.moveTo(60, y_down - 100);
+            context.lineTo(500, y_down - 100);
+            context.fillText("150", 14, y_down - 151);
+            context.moveTo(60, y_down - 150);
+            context.lineTo(500, y_down - 150);
+            context.fillText("200", 14, y_down - 201);
+            context.moveTo(60, y_down - 200);
+            context.lineTo(500, y_down - 200);
+            context.fillText("250", 14, y_down - 251);
+            context.moveTo(60, y_down - 250);
+            context.lineTo(500, y_down - 250);
+            context.fillText("300", 14, y_down - 301);
+            context.moveTo(60, y_down - 300);
+            context.lineTo(500, y_down - 300);
+            context.fillText("350", 14, y_down - 351);
+            context.moveTo(60, y_down - 350);
+            context.lineTo(500, y_down - 350);
+            context.stroke();
+            //             ordinata
+            context.beginPath();
+            context.moveTo(60, 0);
+            context.lineTo(60, 153);
+            context.moveTo(60, 173);
+            context.lineTo(60, 375);
+            context.moveTo(65, 5);
+            context.lineTo(60, 0);
+            context.lineTo(55, 5);
+            context.strokeStyle = "#000";
+            context.stroke();
+
+            context.font = "bold 12px sans-serif";
+            context.fillText("x", 247, y_down + 7);
+            context.fillText("y", 58, 165);
+            context.textBaseline = "top";
+            context.fillText("( 0 , 0 )", 8, y_down);
+
+            context.textAlign = "right";
+            context.textBaseline = "bottom";
+            context.fillText("(" + maxWidth + ", " + maxHeight + ")", 492, 370);
+            context.fillRect(0, 0, 3, 3);
+            context.fillRect(497, 372, 3, 3);
+        }
+
+        function draw(param, maxWidth, maxHeight) {
+            startY = maxHeight - 40;
+            startX = 66;
+            for (y in params) {
+                y = params[y];
+                context.fillRect(startX, startY - y, 8, y);
+                startX += 10;
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="bs-docs-example">
+        <ul id="myTab" class="nav nav-tabs">
+            <li class="active"><a href="#task1" data-toggle="tab">Задание №1</a></li>
+            <li class=""><a href="#task2" data-toggle="tab">Задание №2</a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade active in" id="task1">
+                <h3 class="text-info offset1">График исходных сигналов</h3>
+
+                <div class="row">
+                    <canvas class="span8" id="graphic" width="500" height="375"></canvas>
+                    <p class="span2">Энтропия исходноой последовательности отсчетов = {{ entropy }} </p>
+
+                    <p class="span8 offset1 params">{{ params }}</p>
+                </div>
+                <h3 class="text-info offset1">График после операции децимации с шагом {{ step }}</h3>
+
+                <div class="row">
+                    <canvas class="span8" id="graphic_step" width="500" height="375"></canvas>
+                    <p class="span2">Энтропия последовательности отсчетов после операции децимации
+                        = {{ entropy_step }} </p>
+
+                    <p class="span8 offset1 params">{{ params_by_step }}</p>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="task2">
+                <div class="bs-docs-example">
+                    <div class="accordion" id="accordion2">
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2"
+                                   href="#original">
+                                    Исходные сигналы
+                                </a>
+                            </div>
+                            <div id="original" class="accordion-body collapse" style="height: 0px;">
+                                <div class="accordion-inner">
+                                    <p class="span7">{{ params }}</p>
+
+                                    <blockquote class="offset7 span3 text-info">
+                                        <p>Размер файла {{ size_original }} байт</p></blockquote>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2"
+                                   href="#by_step">
+                                    Сигналы после операции децимации
+                                </a>
+                            </div>
+                            <div id="by_step" class="accordion-body collapse" style="height: 0px;">
+                                <div class="accordion-inner">
+                                    <p class="span7">{{ params_by_step }}</p>
+
+                                    <blockquote class="offset7 span3 text-success">
+                                        <p>Размер файла {{ size_by_step }}
+                                            байт</p>
+                                        <small>Весит меньше на {{ or_step }} байт чем исходный файл</small>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2"
+                                   href="#encoded">
+                                    Закодированные результатирующие сигналы
+                                </a>
+                            </div>
+                            <div id="encoded" class="accordion-body collapse" style="height: 0px;">
+                                <div class="accordion-inner">
+                                    <div>
+                                        <a href="{{ STATIC_URL }}encoded.txt">Скачать закодированный файл</a>
+
+                                        <p>{{ encoded_params_by_step }}</p>
+
+                                        <p><a href="{{ STATIC_URL }}code_dict.txt">Словарь</a> {{ dict }}</p>
+                                    </div>
+                                    <b class="offset1">Декодированные сигналы</b>
+                                    <p>{{ decoded_signals }}</p>
+
+                                    <blockquote class="offset7 span3" style="color: #00CC00;">
+                                        <p>Размер файла {{ size_encoded }} байт</p>
+                                        <small>Весит меньше на {{ or_en }} байт чем исходный файл</small>
+                                        <small>и меньше на {{ step_en }} байт чем файл после операции децимации</small>
+                                    </blockquote>
+
+                                </div>
+                            </div>
+
+                        </div>
+{#                        <div class="accordion-group">#}
+{#                            <div class="accordion-heading">#}
+{#                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2"#}
+{#                                   href="#decode">#}
+{#                                    Раскодировать#}
+{#                                </a>#}
+{#                            </div>#}
+{#                            <div id="decode" class="accordion-body collapse" style="height: 0px;">#}
+{#                                <div class="accordion-inner">#}
+{#                                    <form action="/decode" method="post">{% csrf_token %}#}
+{#                                        <div class="row">#}
+{#                                            <small class="span2">Введите закодированную последовательность</small>#}
+{#                                            <input type="text" name="code" class="span9 offset2">#}
+{#                                        </div>#}
+{#                                        <div class='row' style="margin-top: 15px">#}
+{#                                            <small class='span2'>Введите словарь</small>#}
+{#                                            <input type="text" name="dict" class="span7 offset2">#}
+{#                                        </div>#}
+{#                                        <input class="btn btn-success" type="submit" value="Расскодировать"/>#}
+{#                                    </form>#}
+{##}
+{#                                </div>#}
+{#                            </div>#}
+{##}
+{#                        </div>#}
+{#                    </div>#}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

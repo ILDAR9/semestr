@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Семестровая работа по "Теория информации и кодирования"</title>
+    <meta charset="utf-8">
+    <!-- style-sheet -->
+    <meta name="author" content="Ильдар">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css">
+    {% block style_addon %}
+    {% endblock %}
+    {% block script_addon %}
+    {% endblock %}
+</head>
+<body  onload="startCanvas()">
+<div class="container">
+<div class="navbar navbar-fixed-top header">
+    <div class="navbar-inner">
+        <div class="container">
+            <div class="row">
+                <div class="span2">
+                    <a class="brand" href="/"><img src="{{ STATIC_URL }}img/main_logo.jpeg"></a>
+                </div>
+                <div class="span6" style="margin-top: 35px">
+                    <div class="pull-right" style="margin-top: -5px">
+                        <a class="btn btn-success" href="/execute">Приложение</a>
+                        <a class="btn" type="download" href="{{ STATIC_URL }}Nurgaliev Ildar Ilfatovich.docx"><i class="icon-signin"></i>Теоретическая чать работы</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="well content" style="margin-top: 140px">
+    {% block content%}
+    {% endblock %}
+</div>
+</div>
+
+<!-- java-script -->
+<script src="{{ STATIC_URL }}js/jquery.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.js"></script>
+
+</body>
+</html>

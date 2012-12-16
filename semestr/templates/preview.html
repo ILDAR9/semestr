@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block style_addon %}
+<style type="text/css">
+    #id_signals {
+        width: 500px;
+    }
+
+    #id_step {
+        width: 50px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+    <form action="/execute" method="post">{% csrf_token %}
+        {% for field in form %}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <p class="text-error offset3">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+            <div class="row">
+                <p class="span3 text-info">{{ field.help_text }}</p>
+
+                <div class="offset3">{{ field }}</div>
+            </div>
+        {% endfor %}
+        <input class="btn btn-success" type="submit" value="Выполнить"/>
+    </form>
+{#        <ul id="myTab" class="nav nav-tabs">#}
+{#            <li class="active"><a href="#insert" data-toggle="tab">Ввести данные</a></li>#}
+{#            <li class=""><a href="#file" data-toggle="tab">Загрузить файл</a></li>#}
+{#        </ul>#}
+{#        <div id="myTabContent" class="tab-content">#}
+{#            <div class="tab-pane fade active in" id="insert">#}
+{#                #}
+{#            </div>#}
+{#            <div class="tab-pane fade" id="file">#}
+{#                <form action="/execute" method="post">{% csrf_token %}#}
+{#                    {% for field in form2 %}#}
+{#                        {% if field.errors %}#}
+{#                            {% for error in field.errors %}#}
+{#                                <p class="text-error offset3">{{ error }}</p>#}
+{#                            {% endfor %}#}
+{#                        {% endif %}#}
+{#                        <div class="row">#}
+{#                            <p class="span3 text-info">{{ field.help_text }}</p>#}
+{##}
+{#                            <div class="offset3">{{ field }}</div>#}
+{#                        </div>#}
+{#                    {% endfor %}#}
+{#                    <input class="btn btn-success" type="submit" value="Выполнить"/>#}
+{#                </form>#}
+{#            </div>#}
+{#        </div>#}
+
+
+{% endblock %}
